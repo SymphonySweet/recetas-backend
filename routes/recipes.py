@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from models.recipe import Recipe
 from database import db
 from bson import ObjectId
@@ -20,7 +20,7 @@ def create_recipe(recipe: Recipe):
         "id": str(resultado.inserted_id)
     }
 
-# Obtener todas las recetas
+# Obtener todas las recetas (lista)
 @router.get("/")
 def get_recipes():
     recetas = []
@@ -30,8 +30,32 @@ def get_recipes():
             "title": receta.get("title", ""),
             "description": receta.get("description", ""),
             "price": receta.get("price", 0),
-            "image": receta.get("image") or receta.get("imagen", "assets/img/default.jpg")
+            "image": receta.get("image") or receta.get("imagen", "assets/img/default.jpg"),
+            "ingredients": receta.get("ingredients", []),
+            "steps": receta.get("steps", [])
         })
     return recetas
+
+# Obtener detalle de receta por ID
+@router.get("/{recipe_id}")
+def get_recipe_by_id(recipe_id: str):
+    try:
+        receta = db.recipes.find_one({"_id": ObjectId(recipe_id)})
+    except:
+        raise HTTPException(status_code=400, detail="ID inválido")
+
+    if not receta:
+        raise HTTPException(status_code=404, detail="Receta no encontrada")
+
+    return {
+        "id": str(receta["_id"]),
+        "title": receta.get("title", ""),
+        "description": receta.get("description", ""),
+        "price": receta.get("price", 0),
+        "image": receta.get("image") or receta.get("imagen", "assets/img/default.jpg"),
+        "ingredients": receta.get("ingredients", []),
+        "steps": receta.get("steps", [])
+    }
+
 
 

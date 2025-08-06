@@ -30,7 +30,7 @@ def get_recipes():
             "title": receta.get("title", ""),
             "description": receta.get("description", ""),
             "price": receta.get("price", 0),
-            "image": receta.get("image", "assets/img/default.jpg")  # Cambiado a 'image'
+            "image": receta.get("image") or receta.get("imagen", "assets/img/default.jpg")
         })
     return recetas
 

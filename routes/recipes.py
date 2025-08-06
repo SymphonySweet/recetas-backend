@@ -11,8 +11,8 @@ def create_recipe(recipe: Recipe):
     nueva_receta = recipe.dict()
 
     # Si la imagen está vacía o None, asignar la por defecto
-    if not nueva_receta.get("imagen"):
-        nueva_receta["imagen"] = "assets/img/default.jpg"
+    if not nueva_receta.get("image"):
+        nueva_receta["image"] = "assets/img/default.jpg"
 
     resultado = db.recipes.insert_one(nueva_receta)
     return {
@@ -30,7 +30,8 @@ def get_recipes():
             "title": receta.get("title", ""),
             "description": receta.get("description", ""),
             "price": receta.get("price", 0),
-            "imagen": receta.get("imagen", "assets/img/default.jpg")
+            "image": receta.get("image", "assets/img/default.jpg")  # Cambiado a 'image'
         })
     return recetas
+
 

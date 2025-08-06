@@ -6,8 +6,9 @@ class Recipe(BaseModel):
     title: str
     description: Optional[str] = None
     ingredients: Optional[List[str]] = []
-    steps: Optional[List[str]] = []  # Nuevo nombre en vez de instructions
+    steps: Optional[List[str]] = []  # En vez de instructions
     price: Optional[float] = 0
-    imagen: Optional[str] = "assets/img/default.jpg"
+    image: Optional[str] = "assets/img/default.jpg"  # Cambiado a 'image'
     created_by: Optional[str] = None
+
 

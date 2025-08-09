@@ -56,6 +56,19 @@ def get_recipe_by_id(recipe_id: str):
         "ingredients": receta.get("ingredients", []),
         "steps": receta.get("steps", [])
     }
+    
+# Eliminar receta por ID
+@router.delete("/{recipe_id}")
+def delete_recipe(recipe_id: str):
+    try:
+        resultado = db.recipes.delete_one({"_id": ObjectId(recipe_id)})
+    except:
+        raise HTTPException(status_code=400, detail="ID inválido")
+
+    if resultado.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Receta no encontrada")
+
+    return {"message": "Receta eliminada correctamente"}
 
 
 
